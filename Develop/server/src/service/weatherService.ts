@@ -63,16 +63,16 @@ class WeatherService {
   }
 
   // TODO: Create buildGeocodeQuery method
-  // private buildGeocodeQuery(): string {}
-  // private buildGeocodeQuery(): string {
-  //   const cityData = searchHistory.find((data: any) => data.name === this.cityName);
+    // private buildGeocodeQuery(): string {}
+  private buildGeocodeQuery(): string {
+    const cityData = searchHistory.find((data: any) => data.name === this.cityName);
 
-  //   if (cityData) {
-  //     return `${cityData.name}, ${cityData.state}, ${cityData.country}`;
-  //   } else {
-  //     throw new Error('City not found in search history');
-  //   }
-  // }
+    if (cityData) {
+      return `${cityData.name}, ${cityData.state}, ${cityData.country}`;
+    } else {
+      throw new Error('City not found in search history');
+    }
+  }
 
   // TODO: Create buildWeatherQuery method
   // private buildWeatherQuery(coordinates: Coordinates): string {}
