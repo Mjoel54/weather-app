@@ -18,12 +18,13 @@ router.post('/api/weather/:city', async (req, res) => {
     }
 
     // GET weather data from city name
-    const weatherData = await WeatherService.getWeatherForCity(city);
+    const weatherServiceCity = new WeatherService(city);
+    const weatherData = await weatherServiceCity.getWeatherForCity(city);
 
     // Save city to search history
     await HistoryService.addCity(city);
 
-    res.status(200).json(weatherData);
+    return res.status(200).json(weatherData);
   } catch (error) {
     console.error('Error retrieving weather data:', error);
     res.status(500).json({ error: 'An error occurred while retrieving weather data' });
@@ -34,7 +35,7 @@ router.post('/api/weather/:city', async (req, res) => {
 // TODO: GET search history
 router.get('/api/weather/history', async (_req, res) => {
   try {
-    const history = await HistoryService.getHistory();
+    const history = await HistoryService.getCities();
     res.status(200).json(history);
   } catch (error) {
     res.status(500).json({ error: 'An error occurred while retrieving search history' });
