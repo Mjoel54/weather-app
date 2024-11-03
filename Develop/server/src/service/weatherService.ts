@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 const searchHistory = require('./searchHistory.json');
+
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
@@ -24,7 +26,7 @@ class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
   private baseURL: string;
   private apiKey: string;
-  private cityName: string;
+  cityName: string;
 
   constructor(cityName: string) {
     this.baseURL = process.env.BASE_URL ? process.env.BASE_URL.toString() : '';
@@ -34,7 +36,7 @@ class WeatherService {
 
   // TODO: Create fetchLocationData method
   // private async fetchLocationData(query: string) {}
-  private async fetchLocationData(query: string) {
+  private async fetchLocationData(query: string): Promise<any> {
     try {
       const response = await fetch(
         `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&limit=1&appid=${this.apiKey}`
@@ -55,26 +57,27 @@ class WeatherService {
   // private destructureLocationData(locationData: Coordinates): Coordinates {}
   private destructureLocationData(locationData: any): Coordinates {
     return {
-      latitude: locationData.lat,
-      longitude: locationData.lon,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
     };
   }
+
   // TODO: Create buildGeocodeQuery method
   // private buildGeocodeQuery(): string {}
-  private buildGeocodeQuery(): string {
-    const cityData = searchHistory.find((data: any) => data.name === this.cityName);
+  // private buildGeocodeQuery(): string {
+  //   const cityData = searchHistory.find((data: any) => data.name === this.cityName);
 
-    if (cityData) {
-      return `${cityData.name}, ${cityData.state}, ${cityData.country}`;
-    } else {
-      throw new Error('City not found in search history');
-    }
-  }
+  //   if (cityData) {
+  //     return `${cityData.name}, ${cityData.state}, ${cityData.country}`;
+  //   } else {
+  //     throw new Error('City not found in search history');
+  //   }
+  // }
 
   // TODO: Create buildWeatherQuery method
   // private buildWeatherQuery(coordinates: Coordinates): string {}
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `${this.baseURL}/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&key=${this.apiKey}`;
+    return `/data/2.5/forecast?lat=${coordinates.latitude}&lon=${coordinates.longitude}&appid=${this.apiKey}`;
   }
 
   // TODO: Create fetchAndDestructureLocationData method
