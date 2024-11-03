@@ -1,5 +1,7 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
 
 // TODO: Define a City class with name and id properties
 
@@ -7,9 +9,9 @@ class City {
   name: string;
   id: number;
 
-  constructor(name: string, id: number) {
+  constructor(name: string) {
     this.name = name;
-    this.id = id;
+    this.id = Number(uuidv4());
   }
 }
 
@@ -27,11 +29,11 @@ class HistoryService {
   // async removeCity(id: string) {}
     private filePath = path.join(__dirname, '.searchHistory.json');
 
-    private async read(): Promise<City[]> {
+    async getHistory() {
       try {
         const data = await fs.readFile(this.filePath, 'utf-8');
         return JSON.parse(data);
-      } catch (error) {
+      } catch (error: any) {
         if (error.code === 'ENOENT') {
           return [];
         }
@@ -44,19 +46,18 @@ class HistoryService {
     }
 
     async getCities(): Promise<City[]> {
-      return await this.read();
+      return await this.getHistory();
     }
 
     async addCity(name: string): Promise<void> {
-      const cities = await this.read();
-      const id = cities.length ? cities[cities.length - 1].id + 1 : 1;
-      cities.push(new City(name, id));
+      const cities = await this.getHistory();
+      cities.push(new City(name));
       await this.write(cities);
     }
 
     async removeCity(id: number): Promise<void> {
-      let cities = await this.read();
-      cities = cities.filter(city => city.id !== id);
+      let cities = await this.getHistory();
+      cities = cities.filter((city: City) => city.id !== id);
       await this.write(cities);
     }
   }

@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+const searchHistory = require('./searchHistory.json');
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
@@ -49,15 +50,27 @@ class WeatherService {
   private cityName: string;
 
   constructor() {
-    this.baseURL = process.env.BASE_URL || '';
+    this.baseURL = process.env.BASE_URL || 'api.openweathermap.org';
     this.apiKey = process.env.API_KEY || '';
     this.cityName = '';
   }
 
-  private async fetchLocationData(query: string): Promise<any> {
-    const response = await fetch(`${this.baseURL}/geocode?q=${query}&key=${this.apiKey}`);
-    return response.json();
-  }
+  private async fetchLocationData(cityName: string, stateCode: string, countryCode: string) {
+    try {
+      const response = await fetch(
+        `${this.baseURL}/geo/1.0/direct?q=${cityName},${stateCode},${countryCode}&limit=1&appid=${this.apiKey}`
+      );
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching location data:', error);
+      throw new Error('Failed to fetch location data');
+    }
+  }  
 
   private destructureLocationData(locationData: any): Coordinates {
     return {
@@ -67,7 +80,13 @@ class WeatherService {
   }
 
   private buildGeocodeQuery(): string {
-    return `${this.cityName}`;
+    const cityData = searchHistory.find((data: any) => data.name === this.cityName);
+
+    if (cityData) {
+      return `${cityData.name}, ${cityData.state}, ${cityData.country}`;
+    } else {
+      throw new Error('City not found in search history');
+    }
   }
 
   private buildWeatherQuery(coordinates: Coordinates): string {
