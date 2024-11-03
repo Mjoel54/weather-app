@@ -26,7 +26,8 @@ router.post('/api/weather/:city', async (req, res) => {
     res.status(200).json(weatherData);
   } catch (error) {
     console.error('Error retrieving weather data:', error);
-    return res.status(500).json({ error: 'An error occurred while retrieving weather data' });
+    res.status(500).json({ error: 'An error occurred while retrieving weather data' });
+    return;
   }
 });
 
