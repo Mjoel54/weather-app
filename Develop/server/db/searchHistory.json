@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Sydney",
+        "local_names": {
+            "ja": "シドニー",
+            "de": "Sydney",
+            "be": "Сіднэй",
+            "sr": "Сиднеј",
+            "mi": "Poihākena",
+            "pl": "Sydney",
+            "eo": "Sidnejo",
+            "he": "סידני",
+            "lt": "Sidnėjus",
+            "is": "Sydney",
+            "oc": "Sydney",
+            "zh": "悉尼",
+            "kn": "ಸಿಡ್ಣಿ",
+            "fr": "Sydney",
+            "sv": "Sydney",
+            "en": "Sydney",
+            "ko": "시드니",
+            "ru": "Сидней",
+            "uk": "Сідней",
+            "ar": "سيدني",
+            "es": "Sídney",
+            "hi": "सिड्णि",
+            "mk": "Сиднеј",
+            "mr": "सिडनी",
+            "bg": "Сидни"
+        },
+        "lat": -33.8698439,
+        "lon": 151.2082848,
+        "country": "AU",
+        "state": "New South Wales"
+    }
+]
