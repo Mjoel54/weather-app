@@ -11,14 +11,10 @@ interface Coordinates {
 // TODO: Define a class for the Weather object
 class Weather {
   temperature: number;
-  humidity: number;
-  windSpeed: number;
   description: string;
 
-  constructor(temperature: number, humidity: number, windSpeed: number, description: string) {
+  constructor(temperature: number, description: string) {
     this.temperature = temperature;
-    this.humidity = humidity;
-    this.windSpeed = windSpeed;
     this.description = description;
   }
 }
@@ -30,22 +26,18 @@ class WeatherService {
   private apiKey: string;
   private cityName: string;
 
-  constructor() {
+  constructor(cityName: string) {
     this.baseURL = process.env.BASE_URL ? process.env.BASE_URL.toString() : '';
     this.apiKey = process.env.API_KEY ? process.env.API_KEY.toString() : '';
-    this.cityName = '';
+    this.cityName = cityName;
   }
+
   // TODO: Create fetchLocationData method
   // private async fetchLocationData(query: string) {}
-
   private async fetchLocationData(query: string) {
     try {
       const response = await fetch(
-
-
-
-
-        `${this.baseURL}/geo/1.0/direct?q=${cityName},${stateCode},${countryCode}&limit=1&appid=${this.apiKey}`
+        `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&limit=1&appid=${this.apiKey}`
       );
   
       if (!response.ok) {
